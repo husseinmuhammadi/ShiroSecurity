@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:pf="http://javadev.ir"
+                xmlns:insurance="http://xmlns.jcp.org/jsf/composite/components"
+                template="/base/baseTemplate.xhtml">
+
+    <ui:define name="metadata">
+        <f:metadata>
+            <f:viewParam name="id" value="#{insuredInsurancePlanController.id}"/>
+            <f:viewParam name="insured" value="#{insuredInsurancePlanController.insuredInsurancePlan.insured.id}"/>
+            <f:viewParam name="insurancePlan"
+                         value="#{insuredInsurancePlanController.insuredInsurancePlan.insurancePlan.id}"/>
+            <f:viewParam name="mode" value="#{insuredInsurancePlanController.mode}"/>
+            <f:viewAction action="#{insuredInsurancePlanController.onLoad}"/>
+        </f:metadata>
+    </ui:define>
+
+    <ui:define name="mainContent">
+
+        <h:form class="form-group" style="direction: rtl">
+
+            <insurance:datePicker value="#{insuredInsurancePlanController.insuredInsurancePlan.assignDate}"
+                                  label="label.insuredInsurancePlan.assignDate" componentId="assignDate"
+                                  required="true"/>
+
+            <!--
+            <insurance:datePicker value="#{insuredInsurancePlanController.insuredInsurancePlan.cancelDate}"
+                                  label="label.insuredInsurancePlan.cancelDate" componentId="cancelDate"
+                                  required="true"/>
+            -->
+
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <h:outputLabel for="status" value="#{msglbl['label.insuredInsurancePlan.status']}"/>
+                    </div>
+                    <h:selectOneMenu value="#{insuredInsurancePlanController.insuredInsurancePlan.status}"
+                                     id="status" label="#{msglbl['label.insuredInsurancePlan.status']}"
+                                     required="true" styleClass="form-control">
+                        <f:selectItems value="#{insuredInsurancePlanController.statusTypes.entrySet()}" var="status"
+                                       itemLabel="#{status.value}" itemValue="#{status.key}"/>
+                    </h:selectOneMenu>
+                </div>
+            </div>
+
+            <div class="form-group" style="direction: rtl">
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <h:outputLabel for="insuredId"
+                                       value="#{msglbl['label.insuredInsurancePlan.insured']}"/>
+                    </div>
+                    <pf:lookup lookupPath="/admin/insured/index.xhtml" id="insuredId"
+                               inputClass="form-control" btnClass="btn btn-default"
+                               label="#{msglbl['label.insuredInsurancePlan.insured']}"
+                               binding="#{insuredInsurancePlanController.uiLookupInsured}"
+                               value="#{insuredInsurancePlanController.insuredInsurancePlan.insured.id}"
+                               required="true"/>
+                </div>
+            </div>
+
+            <div class="form-group" style="direction: rtl">
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <h:outputLabel for="insurancePlanId"
+                                       value="#{msglbl['label.insuredInsurancePlan.insurancePlan']}"/>
+                    </div>
+                    <pf:lookup lookupPath="/admin/insuranceplan/index.xhtml" id="insurancePlanId"
+                               label="#{msglbl['label.insuredInsurancePlan.insurancePlan']}"
+                               binding="#{insuredInsurancePlanController.uiLookupInsurancePlan}"
+                               value="#{insuredInsurancePlanController.insuredInsurancePlan.insurancePlan.id}"
+                               inputClass="form-control" btnClass="btn btn-default"
+                               required="true">
+                        <f:param name="status" value="ACTIVE"/>
+                    </pf:lookup>
+                </div>
+            </div>
+
+            <div class="form-group" style="direction: rtl">
+                <div class="input-group">
+                    <insurance:formButtons backBean="#{insuredInsurancePlanController}"/>
+                </div>
+            </div>
+
+
+        </h:form>
+    </ui:define>
+
+</ui:composition>

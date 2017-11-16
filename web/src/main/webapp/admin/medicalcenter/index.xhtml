@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:pf="http://javadev.ir"
+                xmlns:insurance="http://xmlns.jcp.org/jsf/composite/components"
+                template="/base/template.xhtml">
+
+    <ui:define name="metadata">
+        <f:metadata>
+            <f:viewParam name="parentId" value="#{medicalCenterManager.parentId}"/>
+        </f:metadata>
+    </ui:define>
+
+    <ui:define name="pageTitle">
+        #{msglbl['medicalcenter.title']}
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="form">
+            <pf:dataTable value="#{medicalCenterManager.medicalCenters}" var="medicalCenter">
+                <f:facet name="caption">
+                    <h:commandButton value="#{msglbl.add}" rendered="#{param.parentId eq null}">
+                        <pf:dialogBehavior src="insert.xhtml"/>
+                    </h:commandButton>
+                </f:facet>
+                <pf:column headerText="#{msglbl['label.medicalcenter.description']}">
+                    <h:outputText value="#{medicalCenter.description}"/>
+                </pf:column>
+                <pf:column style="width:200px;text-align: center"
+                           headerText="#{msglbl['label.medicalcenter.deductiblePercent']}">
+                    <h:outputText value="#{medicalCenter.deductiblePercent}"/>
+                </pf:column>
+                <pf:column headerText="#{msglbl['label.medicalcenter.state']}">
+                    <h:outputText value="#{medicalCenterManager.getLabel(medicalCenter.status)}"/>
+                </pf:column>
+                <pf:column style="width:60px;text-align: center">
+                    <insurance:dataTableButton insertPageAddress="/admin/medicalcenter/insert" baseEntity="#{medicalCenter}"/>
+
+                    <h:commandButton value="#{msglbl.select}" rendered="#{param.parentId ne null}"
+                                     action="#{medicalCenterManager.selectAction(medicalCenter)}">
+                        <f:param name="t" value="0"/>
+                        <f:param name="parentId" value="#{param.parentId}"/>
+                        <f:ajax render=":messages" execute="none"/>
+                    </h:commandButton>
+                </pf:column>
+            </pf:dataTable>
+        </h:form>
+    </ui:define>
+</ui:composition>

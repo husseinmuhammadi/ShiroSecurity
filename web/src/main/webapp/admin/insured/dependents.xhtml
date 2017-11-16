@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:pf="http://javadev.ir"
+                xmlns:insurance="http://xmlns.jcp.org/jsf/composite/components"
+                template="/base/baseTemplate.xhtml">
+    <ui:define name="metadata">
+        <f:metadata>
+            <f:viewParam name="originalInsured" value="#{dependentsController.id}"/>
+            <f:viewAction action="#{dependentsController.onLoad}"/>
+        </f:metadata>
+    </ui:define>
+
+    <ui:define name="mainContent">
+        <h:form>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <h:outputLabel
+                                value="#{msglbl['label.insured.dependents']} - #{dependentsController.insured.firstName} #{dependentsController.insured.lastName}"/>
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <pf:dataTable id="insured-list" value="#{dependentsController.dependents}"
+                                  var="dependent">
+
+                        <f:facet name="caption">
+                            <h:commandButton value="#{msglbl.add}">
+                                <pf:dialogBehavior src="insert.xhtml"
+                                                   parameters="{'originalInsured':'#{dependentsController.insured.id}'}"/>
+                            </h:commandButton>
+                        </f:facet>
+
+                        <pf:column headerText="#{msglbl['label.baseEntity.id']}">
+                            <h:link value="#{dependent.id}" outcome="profile">
+                                <f:param name="id" value="#{dependent.id}"/>
+                            </h:link>
+                        </pf:column>
+
+                        <pf:column headerText="#{msglbl['firstName']}">
+                            <h:outputText value="#{dependent.firstName}"/>
+                        </pf:column>
+
+                        <pf:column headerText="#{msglbl['lastName']}">
+                            <h:outputText value="#{dependent.lastName}"/>
+                        </pf:column>
+
+                        <pf:column headerText="#{msglbl['label.insured.fatherName']}">
+                            <h:outputText value="#{dependent.fatherName}"/>
+                        </pf:column>
+
+                        <pf:column headerText="#{msglbl['label.insured.birthday']}">
+                            <h:outputText value="#{dependent.birthday}" converter="ir.javadev.jsf.DatePickerConverter"/>
+                        </pf:column>
+
+                        <pf:column headerText="#{msglbl['label.insured.nationalID']}">
+                            <h:outputText value="#{dependent.nationalID}"/>
+                        </pf:column>
+
+                        <pf:column headerText="#{msglbl['label.insured.sex']}">
+                            <h:outputText value="#{dependentsController.getLabel(dependent.sex)}"/>
+                        </pf:column>
+
+                        <pf:column headerText="#{msglbl['label.insured.originalInsured']}">
+                            <h:outputText
+                                    value="#{dependent.originalInsured.firstName} #{dependent.originalInsured.lastName}"/>
+                        </pf:column>
+
+                        <pf:column headerText="#{msglbl['label.insured.relativeWithOriginalInsured']}">
+                            <h:outputText
+                                    value="#{dependentsController.getLabel(dependent.relativeWithOriginalInsured)}"/>
+                        </pf:column>
+
+                        <pf:column style="width:60px;text-align: center">
+                            <insurance:dataTableButton insertPageAddress="/admin/insured/insert"
+                                                       baseEntity="#{dependent}"/>
+
+                            <h:commandButton value="#{msglbl['label.insuredInsurancePlan.add']}"
+                                             rendered="#{param.parentId eq null}">
+                                <pf:dialogBehavior src="/admin/insuredinsuranceplan/insert.xhtml"
+                                                   parameters="{'insured':'#{dependent.id}'}"/>
+                            </h:commandButton>
+                        </pf:column>
+
+                    </pf:dataTable>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

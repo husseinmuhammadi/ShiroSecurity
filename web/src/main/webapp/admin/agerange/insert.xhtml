@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:insurance="http://xmlns.jcp.org/jsf/composite/components"
+                template="/base/baseTemplate.xhtml">
+
+    <ui:define name="metadata">
+        <f:metadata>
+            <f:viewParam name="id" value="#{ageRangeController.id}"/>
+            <f:viewParam name="mode" value="#{ageRangeController.mode}"/>
+            <f:viewAction action="#{ageRangeController.onLoad}"/>
+        </f:metadata>
+    </ui:define>
+
+    <ui:define name="mainContent">
+        <h:form id="createForm">
+            <insurance:inputText label="upper.than.age" isNumber="true"
+                                 value="#{ageRangeController.ageRange.upperThan}" componentId="upperValueTxtBox"
+                                 required="true"/>
+
+            <insurance:inputText label="lower.than.age" isNumber="true"
+                                 value="#{ageRangeController.ageRange.lowerThan}" componentId="lowerValueTxtBox"
+                                 required="true"/>
+
+            <div class="form-group" style="direction: rtl">
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <h:outputLabel for="statusCmbBox" value="#{msglbl.state}"/>
+                    </div>
+                    <h:selectOneMenu value="#{ageRangeController.cmbBoxValue}" id="statusCmbBox" required="true"
+                                     label="#{msglbl.state}" styleClass="form-control">
+                        <f:selectItems value="#{ageRangeController.statusTypes.entrySet()}" var="status"
+                                       itemLabel="#{status.value}" itemValue="#{status.key}"/>
+                    </h:selectOneMenu>
+                </div>
+            </div>
+
+            <div class="form-group" style="direction: rtl">
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <h:outputLabel for="descriptionTxtArea" value="#{msglbl.description}"/>
+                    </div>
+                    <h:inputTextarea value="#{ageRangeController.ageRange.description}" id="descriptionTxtArea"
+                                     styleClass="form-control" label="#{msglbl.description}"/>
+                </div>
+            </div>
+
+            <div class="form-group" style="direction: rtl">
+                <div class="input-group">
+                    <insurance:formButtons backBean="#{ageRangeController}"/>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

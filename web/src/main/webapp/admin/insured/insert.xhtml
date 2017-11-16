@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:insurance="http://xmlns.jcp.org/jsf/composite/components"
+                xmlns:pf="http://javadev.ir"
+                template="/base/baseTemplate.xhtml">
+    <ui:define name="metadata">
+        <f:metadata>
+            <f:viewParam name="id" value="#{insuredController.id}"/>
+            <f:viewParam name="originalInsured" value="#{insuredController.originalInsured}"/>
+            <f:viewParam name="mode" value="#{insuredController.mode}"/>
+            <f:viewAction action="#{insuredController.onLoad}"/>
+        </f:metadata>
+    </ui:define>
+
+    <ui:define name="mainContent">
+        <h:form class="form-group" style="direction: rtl">
+            <insurance:inputText label="firstName" value="#{insuredController.insured.firstName}"
+                                 componentId="first-name" required="true"/>
+
+            <insurance:inputText label="lastName" value="#{insuredController.insured.lastName}"
+                                 componentId="last-name" required="true"/>
+
+            <insurance:inputText label="label.insured.nationalID"
+                                 value="#{insuredController.insured.nationalID}"
+                                 maxlength="10"
+                                 componentId="national-id" required="true"/>
+
+            <insurance:datePicker value="#{insuredController.insured.birthday}" label="label.insured.birthday"
+                                  componentId="birthday" required="true"/>
+
+            <insurance:inputText label="label.insured.fatherName"
+                                 value="#{insuredController.insured.fatherName}"
+                                 componentId="father-name"/>
+
+            <!--
+            <insurance:datePicker value="#{insuredController.insured.firstInsurancePlanStartDate}"
+                                  label="label.insured.firstInsurancePlanStartDate"
+                                  componentId="first-insur-plan-start-date" required="true"/>
+
+            <insurance:datePicker value="#{insuredController.insured.lastInsurancePlanCancelDate}"
+                                  label="label.insured.lastInsurancePlanCancelDate"
+                                  componentId="last-insur-plan-cancel-date" required="true"/>
+            -->
+
+            <insurance:inputText label="label.insured.personnelCode"
+                                 value="#{insuredController.insured.personnelCode}" componentId="personal-code"
+                                 rendered="#{empty insuredController.originalInsured}" required="true"/>
+
+            <div class="form-group" style="direction: rtl">
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <h:outputLabel for="relativeWithOriginalInsured"
+                                       value="#{msglbl['label.insured.relativeWithOriginalInsured']}"/>
+                    </div>
+                    <h:selectOneMenu value="#{insuredController.insured.relativeWithOriginalInsured}"
+                                     id="relativeWithOriginalInsured" label="#{msglbl['label.insured.relativeWithOriginalInsured']}"
+                                     required="true" styleClass="form-control">
+                        <!--<f:selectItem itemLabel="#{insuredController.defaultRelativeLabel}" itemValue="#{insuredController.defaultRelativeValue}"/>-->
+                        <f:selectItems value="#{insuredController.relativeTypes.entrySet()}" var="relative"
+                                       itemLabel="#{relative.value}" itemValue="#{relative.key}"/>
+                    </h:selectOneMenu>
+                </div>
+            </div>
+
+            <div class="form-group" style="direction: rtl">
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <h:outputLabel for="sex" value="#{msglbl['label.insured.sex']}"/>
+                    </div>
+                    <h:selectOneMenu value="#{insuredController.insured.sex}"
+                                     id="sex" label="#{msglbl['label.insured.sex']}"
+                                     required="true" styleClass="form-control">
+                        <f:selectItem itemLabel="#{insuredController.defaultSexLabel}" itemValue="#{insuredController.defaultSexValue}" />
+                        <f:selectItems value="#{insuredController.sexTypes.entrySet()}" var="sex"
+                                       itemLabel="#{sex.value}" itemValue="#{sex.key}"/>
+                    </h:selectOneMenu>
+                </div>
+            </div>
+
+            <!--
+            <insurance:lookup lookupPath="/admin/insured/index.xhtml" label="label.insured.originalInsured"
+                              value="#{insuredController.insured.originalInsured.id}"
+                              componentId="originalInsuredId"/>
+            -->
+
+            <h:panelGroup layout="block" rendered="#{not empty insuredController.originalInsured}">
+                <div class="form-group" style="direction: rtl">
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <h:outputLabel for="originalInsuredId" value="#{msglbl['label.insured.originalInsured']}"/>
+                        </div>
+                        <pf:lookup lookupPath="/admin/insured/index.xhtml" id="originalInsuredId"
+                                   inputClass="form-control" btnClass="btn btn-default"
+                                   label="#{msglbl['label.insured.originalInsured']}"
+                                   binding="#{insuredController.uiLookup}"/>
+                    </div>
+                </div>
+            </h:panelGroup>
+
+            <div class="form-group" style="direction: rtl">
+                <div class="input-group">
+                    <insurance:formButtons backBean="#{insuredController}"/>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:pf="http://javadev.ir"
+                xmlns:insurance="http://xmlns.jcp.org/jsf/composite/components"
+                template="/base/template.xhtml">
+
+    <ui:define name="metadata">
+        <f:metadata>
+            <f:viewParam name="parentId" value="#{receiptManager.parentId}"/>
+        </f:metadata>
+    </ui:define>
+
+    <ui:define name="pageTitle">
+        #{msglbl['label.receipt.list']}
+    </ui:define>
+
+    <ui:define name="content">
+        <fieldset>
+            <legend style="text-align: right">
+                <h:outputLabel value="#{msglbl['label.receipt.list']}"/>
+            </legend>
+
+            <h:form id="form">
+                <pf:dataTable id="receipt-list" value="#{receiptManager.receiptList}" var="receipt">
+                    <f:facet name="caption">
+                        <h:commandButton value="#{msglbl.add}" rendered="#{param.parentId eq null}">
+                            <pf:dialogBehavior src="insert"/>
+                        </h:commandButton>
+                    </f:facet>
+
+                    <pf:column headerText="#{msglbl['label.receipt.receiptDate']}">
+                        <h:outputText value="#{receipt.receiptDate}" converter="ir.javadev.jsf.DatePickerConverter"/>
+                    </pf:column>
+
+                    <pf:column headerText="#{msglbl['label.receipt.receiptAmount']}">
+                        <h:outputText value="#{receipt.receiptAmount}"/>
+                    </pf:column>
+
+                    <pf:column headerText="#{msglbl['label.receipt.description']}">
+                        <h:outputText value="#{receipt.description}"/>
+                    </pf:column>
+
+                    <pf:column headerText="#{msglbl['label.receipt.status']}">
+                        <h:outputText value="#{receiptManager.getLabel(receipt.status)}"/>
+                    </pf:column>
+
+                    <pf:column headerText="#{msglbl['label.receipt.insuranceLiability']}">
+                        <h:outputText value="#{receipt.insuranceLiability.description}"/>
+                    </pf:column>
+
+                    <pf:column headerText="#{msglbl['label.receipt.insurancePlan']}">
+                        <h:outputText value="#{receipt.insuredInsurancePlan.insurancePlan.description}"/>
+                    </pf:column>
+
+                    <pf:column headerText="#{msglbl['label.receipt.insured']}">
+                        <h:outputText value="#{receipt.insuredInsurancePlan.insured.firstName} #{receipt.insuredInsurancePlan.insured.lastName}"/>
+                    </pf:column>
+
+                    <pf:column headerText="#{msglbl['label.receipt.medicalCenter']}">
+                        <h:outputText value="#{receipt.medicalCenter.description}"/>
+                    </pf:column>
+
+                    <pf:column headerText="#{msglbl['label.receipt.receiptCategory']}">
+                        <h:outputText value="#{receipt.receiptCategory.referenceNumber}"/>
+                    </pf:column>
+
+                    <pf:column style="width:60px;text-align: center">
+                        <insurance:dataTableButton insertPageAddress="/admin/receipt/insert" baseEntity="#{receipt}"/>
+
+                        <h:commandButton value="#{msglbl.select}" rendered="#{param.parentId ne null}"
+                                         action="#{receiptManager.selectAction(receipt)}">
+                            <f:param name="t" value="0"/>
+                            <f:param name="parentId" value="#{param.parentId}"/>
+                            <f:ajax render=":messages" execute="none"/>
+                        </h:commandButton>
+                    </pf:column>
+
+                </pf:dataTable>
+            </h:form>
+        </fieldset>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:pf="http://javadev.ir"
+                template="/base/template.xhtml">
+
+    <ui:define name="metadata">
+        <f:metadata>
+            <f:viewParam name="id" value="#{insuredController.id}"/>
+        </f:metadata>
+    </ui:define>
+
+    <ui:define name="content">
+        <pf:tabContainer>
+            <pf:tab src="originalInsuredProfile.xhtml" text="#{msglbl['label.insured.profile']}" active="true">
+                <f:param name="id" value="#{param.id}"/>
+            </pf:tab>
+            <pf:tab src="dependents.xhtml" text="#{msglbl['label.insured.dependents']}">
+                <f:param name="originalInsured" value="#{param.id}"/>
+            </pf:tab>
+            <pf:tab src="receipts.xhtml" text="#{msglbl['label.insured.receipts']}">
+                <f:param name="insured" value="#{param.id}"/>
+            </pf:tab>
+        </pf:tabContainer>
+    </ui:define>
+</ui:composition>

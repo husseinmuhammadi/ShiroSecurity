@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:insurance="http://xmlns.jcp.org/jsf/composite/components"
+                template="/base/baseTemplate.xhtml">
+    <ui:define name="metadata">
+        <f:metadata>
+            <f:viewParam name="id" value="#{originalInsuredController.id}"/>
+            <f:viewAction action="#{originalInsuredController.onLoad}"/>
+        </f:metadata>
+    </ui:define>
+
+    <ui:define name="mainContent">
+        <h:form>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <h:outputLabel
+                                value="#{msglbl['label.insured.profile']} : #{originalInsuredController.insured.firstName} #{originalInsuredController.insured.lastName}"/>
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <insurance:inputText componentId="first-name" label="firstName"
+                                         value="#{originalInsuredController.insured.firstName}"
+                                         disabled="true"/>
+
+                    <insurance:inputText componentId="last-name" label="lastName"
+                                         value="#{originalInsuredController.insured.lastName}"
+                                         disabled="true"/>
+
+                    <insurance:inputText componentId="national-id" label="label.insured.nationalID"
+                                         value="#{originalInsuredController.insured.nationalID}"
+                                         disabled="true"/>
+
+                    <insurance:datePicker componentId="birthday" label="label.insured.birthday"
+                                          value="#{originalInsuredController.insured.birthday}"
+                                          disabled="true"/>
+
+                    <insurance:inputText componentId="father-name" label="label.insured.fatherName"
+                                         value="#{originalInsuredController.insured.fatherName}"
+                                         disabled="true"/>
+
+                    <insurance:inputText componentId="national-id" label="label.insured.nationalID"
+                                         value="#{originalInsuredController.insured.nationalID}"
+                                         disabled="true"/>
+
+                    <insurance:datePicker componentId="first-insur-plan-start-date"
+                                          label="label.insured.firstInsurancePlanStartDate"
+                                          value="#{originalInsuredController.insured.firstInsurancePlanStartDate}"
+                                          disabled="true"/>
+
+                    <insurance:datePicker componentId="last-insur-plan-cancel-date"
+                                          label="label.insured.lastInsurancePlanCancelDate"
+                                          value="#{originalInsuredController.insured.lastInsurancePlanCancelDate}"
+                                          disabled="true"/>
+
+                    <insurance:inputText componentId="personal-code" label="label.insured.personnelCode"
+                                         value="#{originalInsuredController.insured.personnelCode}"
+                                         disabled="true"/>
+
+                    <insurance:inputText componentId="relativeWithOriginalInsured"
+                                         label="label.insured.relativeWithOriginalInsured"
+                                         value="#{originalInsuredController.getLabel(originalInsuredController.insured.relativeWithOriginalInsured)}"
+                                         disabled="true"/>
+
+                    <insurance:inputText componentId="sex"
+                                         label="label.insured.sex"
+                                         value="#{originalInsuredController.getLabel(originalInsuredController.insured.sex)}"
+                                         disabled="true"/>
+
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

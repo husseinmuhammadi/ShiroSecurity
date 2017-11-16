@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://java.sun.com/jstl/core"
+                template="/base/baseTemplate.xhtml">
+    <ui:define name="head">
+        <h:outputScript library="menu" name="script.js" target="head"/>
+        <h:outputStylesheet library="menu" name="styles.css"/>
+    </ui:define>
+    <ui:define name="metadata">
+        <f:metadata>
+            <f:viewParam name="t"/>
+        </f:metadata>
+    </ui:define>
+    <ui:define name="mainContent">
+        <c:choose>
+            <c:when test="#{param.t eq null or param.t ne '0'}">
+                <ui:decorate template="_withoutTheme.xhtml">
+                    <ui:define name="content">
+                        <ui:include src="_theme.xhtml"/>
+                    </ui:define>
+                </ui:decorate>
+            </c:when>
+            <c:otherwise>
+                <ui:include src="_withoutTheme.xhtml"/>
+            </c:otherwise>
+        </c:choose>
+    </ui:define>
+    <ui:insert name="footer"/>
+</ui:composition>

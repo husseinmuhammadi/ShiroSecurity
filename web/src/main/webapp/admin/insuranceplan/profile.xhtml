@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:pf="http://javadev.ir"
+                template="/base/template.xhtml">
+
+    <ui:define name="metadata">
+        <f:metadata>
+            <f:viewParam id="id" name="id" value="#{insurancePlanController.id}"/>
+        </f:metadata>
+    </ui:define>
+
+    <ui:define name="content">
+        <pf:tabContainer>
+            <pf:tab src="liabilities.xhtml" text="#{msglbl['label.insurancePlan.liabilities']}" active="true">
+                <f:param name="insurancePlan" value="#{param.id}"/>
+            </pf:tab>
+        </pf:tabContainer>
+    </ui:define>
+</ui:composition>

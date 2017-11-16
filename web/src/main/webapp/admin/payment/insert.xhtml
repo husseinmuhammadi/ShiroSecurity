@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:pf="http://javadev.ir"
+                xmlns:insurance="http://xmlns.jcp.org/jsf/composite/components"
+                template="/base/baseTemplate.xhtml">
+
+    <ui:define name="metadata">
+        <f:metadata>
+            <f:viewParam name="id" value="#{paymentController.id}"/>
+            <f:viewAction action="#{paymentController.onLoad}"/>
+        </f:metadata>
+    </ui:define>
+
+    <ui:define name="mainContent">
+
+        <h:form class="form-group" style="direction: rtl">
+
+            <insurance:inputText label="label.payment.name"
+                                 value="#{paymentController.payment.name}"
+                                 componentId="name" required="true"/>
+
+            <insurance:datePicker label="label.payment.paymentDate"
+                                  value="#{paymentController.payment.paymentDate}"
+                                  componentId="paymentDate" required="true"/>
+
+            <insurance:inputText label="label.payment.description"
+                                 value="#{paymentController.payment.description}"
+                                 componentId="description"/>
+
+            <div class="form-group" style="direction: rtl">
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <h:outputLabel for="insurancePlanId" value="#{msglbl['label.payment.insurancePlan']}"/>
+                    </div>
+                    <pf:lookup lookupPath="/admin/insuranceplan/index.xhtml" id="insurancePlanId"
+                               inputClass="form-control" btnClass="btn btn-default"
+                               label="#{msglbl['label.payment.insurancePlan']}"
+                               binding="#{paymentController.uiLookupInsurancePlan}"
+                               value="#{paymentController.payment.insurancePlan.id}"
+                               required="true">
+                        <f:param name="status" value="ACTIVE"/>
+                    </pf:lookup>
+                </div>
+            </div>
+
+            <div class="form-group" style="direction: rtl">
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <h:outputLabel for="statusComboBoxValue" value="#{msglbl['label.payment.status']}"/>
+                    </div>
+                    <h:selectOneMenu value="#{paymentController.statusComboBoxValue}"
+                                     id="statusComboBoxValue"
+                                     label="#{msglbl['label.payment.status']}"
+                                     required="true" styleClass="form-control">
+                        <f:selectItems value="#{paymentController.statusTypes.entrySet()}" var="status"
+                                       itemLabel="#{status.value}" itemValue="#{status.key}"/>
+                    </h:selectOneMenu>
+                </div>
+            </div>
+
+            <div class="form-group" style="direction: rtl">
+                <div class="input-group">
+                    <insurance:formButtons backBean="#{paymentController}"/>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

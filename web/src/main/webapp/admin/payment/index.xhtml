@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:pf="http://javadev.ir"
+                xmlns:insurance="http://xmlns.jcp.org/jsf/composite/components"
+                template="/base/template.xhtml">
+
+    <ui:define name="metadata">
+        <f:metadata>
+            <f:viewParam name="parentId" value="#{paymentManager.parentId}"/>
+            <f:viewParam name="insurancePlan" value="#{paymentManager.payment.insurancePlan.id}"/>
+            <f:viewAction action="#{paymentManager.onLoad}"/>
+        </f:metadata>
+    </ui:define>
+
+    <ui:define name="pageTitle">
+        #{msglbl['label.payment.list']}
+    </ui:define>
+
+    <ui:define name="content">
+        <fieldset>
+            <legend style="text-align: right">
+                <h:outputLabel value="#{msglbl['label.payment.list']}"/>
+            </legend>
+
+            <h:form id="form">
+                <pf:dataTable id="payment-list" value="#{paymentManager.paymentList}" var="payment">
+                    <f:facet name="caption">
+                        <h:commandButton value="#{msglbl.add}" rendered="#{param.parentId eq null}">
+                            <pf:dialogBehavior src="insert.xhtml"/>
+                        </h:commandButton>
+                    </f:facet>
+
+                    <pf:column headerText="#{msglbl['label.payment.insurancePlan']}">
+                        <h:outputText value="#{payment.insurancePlan.description}"/>
+                    </pf:column>
+
+                    <pf:column headerText="#{msglbl['label.payment.name']}">
+                        <h:link value="#{payment.name}" outcome="profile">
+                            <f:param name="id" value="#{payment.id}"/>
+                        </h:link>
+                    </pf:column>
+
+                    <pf:column headerText="#{msglbl['label.payment.paymentDate']}">
+                        <h:outputText value="#{payment.paymentDate}" converter="ir.javadev.jsf.DatePickerConverter"/>
+                    </pf:column>
+
+                    <pf:column headerText="#{msglbl['label.payment.status']}">
+                        <h:outputText value="#{paymentManager.getLabel(payment.status)}"/>
+                    </pf:column>
+
+                    <pf:column headerText="#{msglbl['label.payment.description']}">
+                        <h:outputText value="#{payment.description}"/>
+                    </pf:column>
+
+                    <pf:column style="width:60px;text-align: center">
+                        <insurance:dataTableButton insertPageAddress="/admin/payment/insert" baseEntity="#{payment}"/>
+
+                        <h:commandButton value="#{msglbl.select}" rendered="#{param.parentId ne null}"
+                                         action="#{paymentManager.selectAction(payment)}">
+                            <f:param name="t" value="0"/>
+                            <f:param name="parentId" value="#{param.parentId}"/>
+                            <f:ajax render=":messages" execute="none"/>
+                        </h:commandButton>
+                    </pf:column>
+                </pf:dataTable>
+            </h:form>
+        </fieldset>
+    </ui:define>
+</ui:composition>

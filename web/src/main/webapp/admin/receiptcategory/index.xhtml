@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:pf="http://javadev.ir"
+                xmlns:insurance="http://xmlns.jcp.org/jsf/composite/components"
+                template="/base/template.xhtml">
+
+    <ui:define name="metadata">
+        <f:metadata>
+            <f:viewParam name="parentId" value="#{receiptCategoryManager.parentId}"/>
+        </f:metadata>
+    </ui:define>
+
+    <ui:define name="pageTitle">
+        #{msglbl['label.receiptCategory.list']}
+    </ui:define>
+
+    <ui:define name="content">
+        <fieldset>
+            <legend style="text-align: right">
+                <h:outputLabel value="#{msglbl['label.receiptCategory.list']}"/>
+            </legend>
+
+            <h:form id="form">
+                <pf:dataTable id="receipt-category-list" value="#{receiptCategoryManager.receiptCategoryList}" var="receiptCategory">
+                    <pf:column headerText="#{msglbl['label.receiptCategory.referenceNumber']}">
+                        <h:link value="#{receiptCategory.referenceNumber}" outcome="profile">
+                            <f:param name="id" value="#{receiptCategory.id}"/>
+                        </h:link>
+                    </pf:column>
+
+                    <pf:column headerText="#{msglbl['label.receiptCategory.paidDate']}">
+                        <h:outputText value="#{receiptCategory.paidDate}" converter="ir.javadev.jsf.DatePickerConverter"/>
+                    </pf:column>
+
+                    <pf:column headerText="#{msglbl['label.receiptCategory.status']}">
+                        <h:outputText value="#{receiptCategoryManager.getLabel(receiptCategory.status)}"/>
+                    </pf:column>
+
+                    <pf:column style="width:60px;text-align: center">
+                        <insurance:dataTableButton insertPageAddress="/admin/receiptcategory/insert" baseEntity="#{receiptCategoryManager}"/>
+                    </pf:column>
+                </pf:dataTable>
+            </h:form>
+        </fieldset>
+    </ui:define>
+</ui:composition>

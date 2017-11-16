@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:pf="http://javadev.ir"
+                xmlns:insurance="http://xmlns.jcp.org/jsf/composite/components"
+                template="/base/baseTemplate.xhtml">
+
+    <ui:define name="metadata">
+        <f:metadata>
+            <f:viewParam name="id" value="#{receiptController.id}"/>
+            <f:viewParam name="insured" value="#{receiptController.receipt.insuredInsurancePlan.insured.id}"/>
+            <f:viewParam name="insurancePlan" value="#{receiptController.receipt.insuredInsurancePlan.insurancePlan.id}"/>
+            <f:viewParam name="referenceNumber" value="#{receiptController.receipt.receiptCategory.referenceNumber}"/>
+            <f:viewAction action="#{receiptController.onLoad}"/>
+        </f:metadata>
+    </ui:define>
+
+    <ui:define name="mainContent">
+        <h:form class="form-group" style="direction: rtl">
+            <insurance:inputText label="label.receiptCategory.referencenumber"
+                                 value="#{receiptController.receipt.receiptCategory.referenceNumber}"
+                                 componentId="referenceNumber" required="true" disabled="true"/>
+
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <h:outputLabel for="insuredId" value="#{msglbl['label.insuredInsurancePlan.insured']}"/>
+                    </div>
+                    <pf:lookup lookupPath="/admin/insured/index.xhtml"
+                               inputClass="form-control" btnClass="btn btn-default"
+                               label="#{msglbl['label.insuredInsurancePlan.insured']}"
+                               binding="#{receiptController.uiLookupInsured}"
+                               id="insuredId" value="#{receiptController.receipt.insuredInsurancePlan.insured.id}"
+                               required="true"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <h:outputLabel for="insurancePlanId"
+                                       value="#{msglbl['label.insuredInsurancePlan.insurancePlan']}"/>
+                    </div>
+                    <pf:lookup lookupPath="/admin/insuredinsuranceplan/index.xhtml" id="insurancePlanId"
+                               label="#{msglbl['label.insuredInsurancePlan.insurancePlan']}"
+                               binding="#{receiptController.uiLookupInsuredInsurancePlan}"
+                               value="#{receiptController.receipt.insuredInsurancePlan.id}"
+                               inputClass="form-control" btnClass="btn btn-default"
+                               required="true">
+                        <f:ajax event="valueChange" execute="@this" render="insuranceLiabilityId payment"
+                                listener="#{receiptController.insuredInsurancePlanValueChange}"/>
+                        <f:param name="status" value="ACTIVE"/>
+                        <f:param name="insured" value="#{param.insured}"/>
+                    </pf:lookup>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <h:outputLabel for="insuranceLiabilityId"
+                                       value="#{msglbl['label.receipt.insuranceLiability']}"/>
+                    </div>
+                    <pf:lookup lookupPath="/admin/insuranceliability/index.xhtml" id="insuranceLiabilityId"
+                               inputClass="form-control" btnClass="btn btn-default" readOnly="false"
+                               label="#{msglbl['label.receipt.insuranceLiability']}"
+                               binding="#{receiptController.uiLookupInsuranceLiability}"
+                               value="#{receiptController.receipt.insuranceLiability.id}"
+                               required="true"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <h:outputLabel for="payment" value="#{msglbl['label.receipt.payment']}"/>
+                    </div>
+                    <pf:lookup lookupPath="/admin/payment/index.xhtml" id="payment"
+                               inputClass="form-control" btnClass="btn btn-default"
+                               label="#{msglbl['label.receipt.payment']}" readOnly="false"
+                               binding="#{receiptController.uiLookupPayment}"
+                               value="#{receiptController.receipt.payment.id}"
+                               required="true"/>
+                </div>
+            </div>
+
+            <insurance:datePicker value="#{receiptController.receipt.receiptDate}"
+                                  label="label.receipt.receiptDate" componentId="receiptDate"
+                                  required="true"/>
+
+            <insurance:inputText label="label.receipt.receiptAmount"
+                                 value="#{receiptController.receipt.receiptAmount}" isNumber="true"
+                                 separatorFormatter="true" maxlength="15"
+                                 componentId="receiptAmount" required="true">
+                <f:converter for="converter" converterId="ir.javadev.jsf.MoneyConverter"/>
+            </insurance:inputText>
+
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <h:outputLabel for="status" value="#{msglbl['label.receipt.status']}"/>
+                    </div>
+                    <h:selectOneMenu id="status" label="#{msglbl['label.receipt.status']}"
+                                     value="#{receiptController.receipt.status}" styleClass="form-control"
+                                     required="true">
+                        <f:selectItems value="#{receiptController.statusTypes.entrySet()}" var="status"
+                                       itemLabel="#{status.value}" itemValue="#{status.key}"/>
+                    </h:selectOneMenu>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <h:outputLabel for="medicalCenterId" value="#{msglbl['label.receipt.medicalCenter']}"/>
+                    </div>
+                    <pf:lookup lookupPath="/admin/medicalcenter/index.xhtml" id="medicalCenterId"
+                               inputClass="form-control" btnClass="btn btn-default"
+                               label="#{msglbl['label.receipt.medicalCenter']}"
+                               binding="#{receiptController.uiLookupMedicalCenter}"
+                               value="#{receiptController.receipt.medicalCenter.id}"
+                               required="true"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <h:outputLabel for="description" value="#{msglbl['label.receipt.description']}"/>
+                    </div>
+                    <h:inputTextarea value="#{receiptController.receipt.description}"
+                                     id="description" styleClass="form-control"
+                                     label="#{msglbl['label.receipt.description']}"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="input-group">
+                    <insurance:formButtons backBean="#{receiptController}"/>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

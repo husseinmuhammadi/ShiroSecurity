@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:pf="http://javadev.ir"
+                xmlns:insurance="http://xmlns.jcp.org/jsf/composite/components"
+                template="/base/template.xhtml">
+    <ui:define name="content">
+        <h:form id="reportForm">
+            <insurance:datePicker value="#{insuredMembershipFeeReportController.fromDate}" label="fromdate"
+                                  componentId="fromDate" required="true"/>
+
+            <insurance:datePicker value="#{insuredMembershipFeeReportController.toDate}" label="todate"
+                                  componentId="toDate" required="true"/>
+
+            <div class="form-group" style="direction: rtl">
+                <div class="input-group">
+                    <h:commandButton action="#{insuredMembershipFeeReportController.report}" value="#{msglbl.submit}"
+                                     styleClass="btn btn-default">
+                        <f:ajax render=":messages @form" execute="@form"/>
+                    </h:commandButton>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

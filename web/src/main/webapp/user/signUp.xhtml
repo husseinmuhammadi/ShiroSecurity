@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns:insurance="http://xmlns.jcp.org/jsf/composite/components"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/base/template.xhtml">
+    <ui:define name="content">
+        <h:form id="singUpForm">
+            <insurance:inputText label="firstName" componentId="firstName" value="#{signUpController.user.FName}"
+                                 required="true"/>
+
+            <insurance:inputText label="lastName" componentId="lastName" value="#{signUpController.user.LName}"
+                                 required="true"/>
+
+            <div class="form-group" style="direction: rtl">
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <h:outputLabel for="username" value="#{msglbl['username']}"/>
+                    </div>
+                    <h:inputText value="#{signUpController.user.username}" id="username"
+                                 styleClass="form-control"
+                                 label="#{msglbl['username']}"
+                                 required="true"
+                                 p:placeholder="#{msglbl['username']}">
+                        <f:validateLength minimum="4"/>
+                    </h:inputText>
+                </div>
+            </div>
+
+            <div class="form-group" style="direction: rtl">
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <h:outputLabel for="role"
+                                       value="#{msglbl['role']}"/>
+                    </div>
+                    <h:selectOneMenu value="#{signUpController.role}" id="role" label="#{msglbl['role']}"
+                                     required="true" styleClass="form-control">
+                        <f:selectItems value="#{signUpController.roles}" var="role"
+                                       itemLabel="#{role.name}" itemValue="#{role.id}"/>
+                    </h:selectOneMenu>
+                </div>
+            </div>
+
+            <div class="form-group" style="direction: rtl">
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <h:outputLabel for="password" value="#{msglbl['password']}"/>
+                    </div>
+                    <h:inputSecret value="#{signUpController.user.password}" id="password"
+                                   styleClass="form-control"
+                                   label="#{msglbl['password']}"
+                                   required="true"
+                                   p:placeholder="#{msglbl['password']}"
+                                   p:matchWith="password"
+                    >
+                        <f:validateLength minimum="4" />
+                    </h:inputSecret>
+                </div>
+            </div>
+
+            <div class="form-group" style="direction: rtl">
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <h:outputLabel for="confirmPassword" value="#{msglbl['confirmPassword']}"/>
+                    </div>
+                    <h:inputSecret value="#{signUpController.confirmPassword}" id="confirmPassword"
+                                   styleClass="form-control"
+                                   label="#{msglbl['confirmPassword']}"
+                                   required="true"
+                                   p:placeholder="#{msglbl['confirmPassword']}"
+                                   p:matchWith="password"
+                    >
+                        <f:validator validatorId="matchValidation"/>
+                    </h:inputSecret>
+                </div>
+            </div>
+
+            <insurance:formButtons backBean="#{signUpController}"/>
+        </h:form>
+    </ui:define>
+</ui:composition>

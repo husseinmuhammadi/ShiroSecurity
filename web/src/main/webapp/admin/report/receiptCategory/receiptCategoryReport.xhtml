@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:insurance="http://xmlns.jcp.org/jsf/composite/components"
+                template="/base/template.xhtml">
+
+    <ui:define name="pageTitle">
+        #{msglbl['menu.receiptcategory.report']}
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="reportForm">
+            <insurance:inputText label="label.receiptCategory.referencenumber"
+                                 value="#{receiptCategoryReportController.referenceNumber}"
+                                 componentId="receipt-category-referencenumber"/>
+
+            <insurance:lookup lookupPath="/admin/insured/index.xhtml" label="label.receiptCategory.Insured"
+                              value="#{receiptCategoryReportController.insuredId}" componentId="insuredId"/>
+
+            <insurance:datePicker value="#{receiptCategoryReportController.createOnFrom}"
+                                  label="label.receiptCategory.create.on.from"
+                                  componentId="receipt-category-create-on-from"/>
+
+            <insurance:datePicker value="#{receiptCategoryReportController.createOnTo}"
+                                  label="label.receiptCategory.create.on.to"
+                                  componentId="receipt-category-create-on-to"/>
+
+            <insurance:datePicker value="#{receiptCategoryReportController.paidOnFrom}"
+                                  label="label.receiptCategory.paid.on.from"
+                                  componentId="receipt-category-paid-on-from"/>
+
+            <insurance:datePicker value="#{receiptCategoryReportController.paidOnTo}"
+                                  label="label.receiptCategory.paid.on.to"
+                                  componentId="receipt-category-paid-on-to"/>
+
+            <div class="form-group" style="direction: rtl">
+                <div class="input-group">
+                    <h:commandButton action="#{receiptCategoryReportController.report}" value="#{msglbl.submit}"
+                                     styleClass="btn btn-default">
+                        <f:ajax render=":messages @form" execute="@form"/>
+                    </h:commandButton>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

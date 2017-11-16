@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:pf="http://javadev.ir"
+                xmlns:insurance="http://xmlns.jcp.org/jsf/composite/components"
+                template="/base/template.xhtml">
+
+    <ui:define name="metadata">
+        <f:metadata>
+            <f:viewParam id="id" name="id" value="#{insuranceLiabilityController.id}"/>
+            <f:viewAction action="#{insuranceLiabilityController.onLoad}"/>
+        </f:metadata>
+    </ui:define>
+
+    <ui:define name="content">
+        <h:panelGroup id="profile" style="direction: rtl;">
+
+            <h:form class="form-group" style="direction: rtl">
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            <h:outputLabel
+                                    value="#{msglbl['label.insuranceLiability.profile']} : #{insuranceLiabilityController.insuranceLiability.description}"/>
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <insurance:inputText componentId="description" label="label.insuranceLiability.description"
+                                             value="#{insuranceLiabilityController.insuranceLiability.description}"
+                                             disabled="true"/>
+
+                        <insurance:inputText componentId="ceilingLiabilityAmount"
+                                             label="label.insuranceLiability.ceilingLiabilityAmount"
+                                             value="#{insuranceLiabilityController.insuranceLiability.ceilingLiabilityAmount}"
+                                             disabled="true"/>
+
+                        <insurance:inputText componentId="displayOrder" label="label.insuranceLiability.displayOrder"
+                                             value="#{insuranceLiabilityController.insuranceLiability.displayOrder}"
+                                             disabled="true"/>
+
+                        <insurance:inputText componentId="waitingPeriod" label="label.insuranceLiability.waitingPeriod"
+                                             value="#{insuranceLiabilityController.insuranceLiability.waitingPeriod}"
+                                             disabled="true"/>
+
+                        <insurance:inputText componentId="insurancePlan" label="label.insuranceLiability.insurancePlan"
+                                             value="#{insuranceLiabilityController.insuranceLiability.insurancePlan.id}"
+                                             disabled="true"/>
+
+                        <insurance:lookup lookupPath="/admin/insuranceliability/index.xhtml"
+                                          label="label.insuranceLiability.parentInsuranceLiability"
+                                          value="#{insuranceLiabilityController.insuranceLiability.parentInsuranceLiability.id}"
+                                          componentId="parentInsuranceLiability"/>
+
+                    </div>
+                </div>
+
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            <h:outputLabel
+                                    value="#{msglbl['label.insuranceLiability.liabilities']} - #{insuranceLiabilityController.insuranceLiability.description} (#{insuranceLiabilityController.insuranceLiability.ceilingLiabilityAmount})"/>
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <pf:dataTable id="liabilities-list"
+                                     value="#{insuranceLiabilityController.insuranceLiability.liabilities}"
+                                     var="liability">
+
+                            <f:facet name="header">
+                                <h:commandButton value="#{msglbl.add}">
+                                    <pf:dialogBehavior src="insert.xhtml"
+                                                       parameters="{'parentInsuranceLiability':'#{insuranceLiabilityController.insuranceLiability.id}'}"/>
+                                </h:commandButton>
+                            </f:facet>
+
+                            <pf:column headerText="#{msglbl['label.baseEntity.id']}">
+                                <h:link value="#{liability.id}" outcome="profile">
+                                    <f:param name="id" value="#{liability.id}"/>
+                                </h:link>
+                            </pf:column>
+
+                            <pf:column headerText="#{msglbl['label.insuranceLiability.description']}">
+                                <h:outputText value="#{liability.description}"/>
+                            </pf:column>
+
+                            <pf:column headerText="#{msglbl['label.insuranceLiability.ceilingLiabilityAmount']}">
+                                <h:outputText value="#{liability.ceilingLiabilityAmount}"/>
+                            </pf:column>
+
+                            <pf:column headerText="#{msglbl['label.insuranceLiability.displayOrder']}">
+                                <h:outputText value="#{liability.displayOrder}"/>
+                            </pf:column>
+
+                            <pf:column headerText="#{msglbl['label.insuranceLiability.waitingPeriod']}">
+                                <h:outputText value="#{liability.waitingPeriod}"/>
+                            </pf:column>
+
+                            <pf:column headerText="#{msglbl['label.insuranceLiability.insurancePlan']}">
+                                <h:outputText value="#{liability.insurancePlan.id}"/>
+                            </pf:column>
+
+                            <pf:column headerText="#{msglbl['label.insuranceLiability.parentInsuranceLiability']}">
+                                <h:outputText value="#{liability.parentInsuranceLiability.id}"/>
+                            </pf:column>
+
+                        </pf:dataTable>
+                    </div>
+                </div>
+
+            </h:form>
+
+        </h:panelGroup>
+    </ui:define>
+</ui:composition>

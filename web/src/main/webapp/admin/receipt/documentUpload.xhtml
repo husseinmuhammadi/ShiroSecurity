@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:insurance="http://java.sun.com/jsf/composite/components"
+                template="/base/baseTemplate.xhtml"
+        >
+    <ui:define name="mainContent">
+        <h:form enctype="multipart/form-data">
+            <h:inputFile id="uploadFile" value="#{documentUploadController.part}"/>
+            <insurance:lookup label="label.insured.receipts" lookupPath="/admin/receipt/index.xhtml"
+                              componentId="receipt" value="#{documentUploadController.receiptImage.receipt.id}"/>
+            <insurance:inputText componentId="description" value="description" label="#{msglbl.description}"/>
+            <h:commandButton action="#{documentUploadController.uploadFile}" value="Upload File"/>
+        </h:form>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:pf="http://javadev.ir"
+                xmlns:insurance="http://xmlns.jcp.org/jsf/composite/components"
+                template="/base/template.xhtml">
+
+    <ui:define name="metadata">
+        <f:metadata>
+            <f:viewParam name="parentId" value="#{insurancePlanManager.parentId}"/>
+            <f:viewParam name="status" value="#{insurancePlanManager.status}"/>
+            <f:viewAction action="#{insurancePlanManager.onLoad}"/>
+        </f:metadata>
+    </ui:define>
+
+    <ui:define name="pageTitle">
+        #{msglbl['label.insurancePlan.list']}
+    </ui:define>
+
+    <ui:define name="content">
+        <fieldset>
+            <legend style="text-align: right">
+                <h:outputLabel value="#{msglbl['label.insurancePlan.list']}"/>
+            </legend>
+
+            <h:form id="form">
+                <pf:dataTable id="insured-list" value="#{insurancePlanManager.insurancePlanList}" var="insurancePlan">
+                    <f:facet name="caption">
+                        <h:commandButton value="#{msglbl.add}" rendered="#{param.parentId eq null}">
+                            <pf:dialogBehavior src="insert.xhtml"/>
+                        </h:commandButton>
+                    </f:facet>
+
+                    <pf:column headerText="#{msglbl['label.baseEntity.id']}">
+                        <h:link value="#{insurancePlan.id}" outcome="profile">
+                            <f:param name="id" value="#{insurancePlan.id}"/>
+                        </h:link>
+                    </pf:column>
+
+                    <pf:column headerText="#{msglbl['label.insurancePlan.ceilingPlanLiabilityAmount']}">
+                        <h:outputText value="#{insurancePlan.ceilingPlanLiabilityAmount}"/>
+                    </pf:column>
+
+                    <pf:column headerText="#{msglbl['label.insurancePlan.startDate']}">
+                        <h:outputText value="#{insurancePlan.startDate}" converter="ir.javadev.jsf.DatePickerConverter"/>
+                    </pf:column>
+
+                    <pf:column headerText="#{msglbl['label.insurancePlan.endDate']}">
+                        <h:outputText value="#{insurancePlan.endDate}" converter="ir.javadev.jsf.DatePickerConverter"/>
+                    </pf:column>
+
+                    <pf:column headerText="#{msglbl['label.insurancePlan.lastReceiptAcceptDate']}">
+                        <h:outputText value="#{insurancePlan.lastReceiptAcceptDate}" converter="ir.javadev.jsf.DatePickerConverter"/>
+                    </pf:column>
+
+                    <pf:column headerText="#{msglbl['label.insurancePlan.status']}">
+                        <h:outputText value="#{insurancePlanManager.getLabel(insurancePlan.status)}"/>
+                    </pf:column>
+
+                    <pf:column headerText="#{msglbl['label.insurancePlan.description']}">
+                        <h:outputText value="#{insurancePlan.description}"/>
+                    </pf:column>
+
+                    <pf:column headerText="#{msglbl['label.insurancePlan.planType']}">
+                        <h:outputText value="#{insurancePlan.planType.description}"/>
+                    </pf:column>
+
+                    <pf:column style="width:60px;text-align: center">
+                        <insurance:dataTableButton insertPageAddress="/admin/insuranceplan/insert" baseEntity="#{insurancePlan}"/>
+
+                        <h:commandButton value="#{msglbl.select}" rendered="#{param.parentId ne null}"
+                                         action="#{insurancePlanManager.selectAction(insurancePlan)}">
+                            <f:param name="t" value="0"/>
+                            <f:param name="parentId" value="#{param.parentId}"/>
+                            <f:ajax render=":messages" execute="none"/>
+                        </h:commandButton>
+                    </pf:column>
+                </pf:dataTable>
+            </h:form>
+        </fieldset>
+    </ui:define>
+</ui:composition>

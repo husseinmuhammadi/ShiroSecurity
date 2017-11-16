@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:insurance="http://xmlns.jcp.org/jsf/composite/components"
+                template="/base/template.xhtml">
+
+    <ui:define name="pageTitle">
+        #{msglbl['menu.receiptsummaryreport.report']}
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="reportForm">
+            <insurance:lookup lookupPath="/admin/insured/index.xhtml"
+                              label="label.receipt.insured"
+                              value="#{receiptSummaryReportController.insuredId}"
+                              componentId="insuredId" required="false"/>
+
+            <insurance:lookup lookupPath="/admin/insuredinsuranceplan/index.xhtml"
+                              label="label.receipt.insuredInsurancePlan"
+                              value="#{receiptSummaryReportController.insuredInsurancePlanId}"
+                              componentId="insuredInsurancePlanId" required="false"/>
+
+            <insurance:datePicker value="#{receiptSummaryReportController.createOnFrom}"
+                                  label="label.receiptCategory.create.on.from"
+                                  componentId="receipt-category-create-on-from"/>
+
+            <insurance:datePicker value="#{receiptSummaryReportController.createOnTo}"
+                                  label="label.receiptCategory.create.on.to"
+                                  componentId="receipt-category-create-on-to"/>
+
+            <insurance:datePicker value="#{receiptSummaryReportController.paidOnFrom}"
+                                  label="label.receiptCategory.paid.on.from"
+                                  componentId="receipt-category-paid-on-from"/>
+
+            <insurance:datePicker value="#{receiptSummaryReportController.paidOnTo}"
+                                  label="label.receiptCategory.paid.on.to"
+                                  componentId="receipt-category-paid-on-to"/>
+
+            <div class="form-group" style="direction: rtl">
+                <div class="input-group">
+                    <h:commandButton action="#{receiptSummaryReportController.report}" value="#{msglbl.submit}"
+                                     styleClass="btn btn-default">
+                        <f:ajax render=":messages @form" execute="@form"/>
+                    </h:commandButton>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

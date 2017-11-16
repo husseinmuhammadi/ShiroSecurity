@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:insurance="http://xmlns.jcp.org/jsf/composite/components"
+                xmlns:pf="http://javadev.ir"
+                template="/base/baseTemplate.xhtml">
+
+    <ui:define name="metadata">
+        <f:metadata>
+            <f:viewParam name="id" value="#{insuranceLiabilityController.id}"/>
+            <f:viewParam name="insurancePlan" value="#{insuranceLiabilityController.insurancePlan}"/>
+            <f:viewParam name="parentInsuranceLiability"
+                         value="#{insuranceLiabilityController.parentInsuranceLiability}"/>
+            <f:viewParam name="mode" value="#{insuranceLiabilityController.mode}"/>
+            <f:viewAction action="#{insuranceLiabilityController.onLoad}"/>
+        </f:metadata>
+    </ui:define>
+
+    <ui:define name="mainContent">
+
+        <h:panelGroup id="insert">
+            <h:form class="form-group" style="direction: rtl">
+
+                <insurance:inputText label="label.insuranceLiability.ceilingLiabilityAmount"
+                                     value="#{insuranceLiabilityController.insuranceLiability.ceilingLiabilityAmount}"
+                                     componentId="ceilingLiabilityAmount" required="true"/>
+
+                <insurance:inputText label="label.insuranceLiability.description"
+                                     value="#{insuranceLiabilityController.insuranceLiability.description}"
+                                     componentId="description" required="true"/>
+
+                <!--
+                <insurance:inputText label="label.insuranceLiability.displayOrder"
+                                     value="#{insuranceLiabilityController.insuranceLiability.displayOrder}"
+                                     componentId="displayOrder" required="true"/>
+                -->
+
+                <insurance:inputText label="label.insuranceLiability.liabilityNo"
+                                     value="#{insuranceLiabilityController.insuranceLiability.liabilityNo}"
+                                     componentId="liabilityNo" required="true"/>
+
+                <insurance:inputText label="label.insuranceLiability.waitingPeriod"
+                                     value="#{insuranceLiabilityController.insuranceLiability.waitingPeriod}"
+                                     componentId="waitingPeriod" required="true"/>
+
+                <!--
+                <insurance:lookup lookupPath="/admin/insuranceplan/index.xhtml"
+                                  label="label.insuranceLiability.insurancePlan"
+                                  value="#{insuranceLiabilityController.insuranceLiability.insurancePlan.id}"
+                                  componentId="insurancePlan" required="true"/>
+                -->
+
+                <div class="form-group" style="direction: rtl">
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <h:outputLabel for="insurancePlanId" value="#{msglbl['label.insuranceLiability.insurancePlan']}"/>
+                        </div>
+                        <pf:lookup lookupPath="/admin/insuranceplan/index.xhtml"
+                                   label="#{msglbl['label.insuranceLiability.insurancePlan']}"
+                                   id="insurancePlanId"
+                                   value="#{insuranceLiabilityController.insuranceLiability.insurancePlan.id}"
+                                   inputClass="form-control" btnClass="btn btn-default"
+                                   binding="#{insuranceLiabilityController.uiLookupInsurancePlan}"/>
+                    </div>
+                </div>
+
+                <div class="form-group" style="direction: rtl">
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <h:outputLabel for="parentInsuranceLiability"
+                                           value="#{msglbl['label.insuranceLiability.parentInsuranceLiability']}"/>
+                        </div>
+                        <pf:lookup lookupPath="/admin/insuranceliability/index.xhtml"
+                                   label="#{msglbl['label.insuranceLiability.parentInsuranceLiability']}"
+                                   id="parentInsuranceLiability"
+                                   value="#{insuranceLiabilityController.insuranceLiability.parentInsuranceLiability.id}"
+                                   inputClass="form-control" btnClass="btn btn-default"                                   
+                                   binding="#{insuranceLiabilityController.uiLookupParentInsuranceLiability}"/>
+                    </div>
+                </div>
+
+                <div class="form-group" style="direction: rtl">
+                    <div class="input-group">
+                        <insurance:formButtons backBean="#{insuranceLiabilityController}"/>
+                    </div>
+                </div>
+
+            </h:form>
+        </h:panelGroup>
+    </ui:define>
+</ui:composition>

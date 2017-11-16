@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<faces-config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd"
+              version="2.2">
+    <application>
+        <navigation-handler>ir.javadev.jsf.parsfaces.handler.DialogNavigationHandler</navigation-handler>
+        <view-handler>ir.team.insurance.complementary.web.listener.InsuranceViewHandler</view-handler>
+
+        <resource-bundle>
+            <base-name>ir.team.insurance.complementary.web.i18n.message.messages</base-name>
+            <var>msg</var>
+        </resource-bundle>
+
+        <resource-bundle>
+            <base-name>ir.team.insurance.complementary.web.i18n.label.messages</base-name>
+            <var>msglbl</var>
+        </resource-bundle>
+
+        <message-bundle>ir.team.insurance.complementary.web.i18n.validation.messages</message-bundle>
+
+        <locale-config>
+            <default-locale>fa_IR</default-locale>
+            <supported-locale>fa_IR</supported-locale>
+            <supported-locale>en_US</supported-locale>
+        </locale-config>
+
+        <system-event-listener>
+            <system-event-listener-class>ir.team.insurance.complementary.web.util.PageModeSystemListener
+            </system-event-listener-class>
+            <system-event-class>javax.faces.event.PostAddToViewEvent</system-event-class>
+        </system-event-listener>
+    </application>
+
+    <navigation-rule>
+        <from-view-id>*</from-view-id>
+        <navigation-case>
+            <from-outcome>noValid</from-outcome>
+            <to-view-id>/index.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+
+    <lifecycle>
+        <phase-listener>ir.javadev.jsf.parsfaces.listener.HandleMessageListener</phase-listener>
+        <phase-listener>ir.team.insurance.complementary.web.security.SecurityPhaseListener</phase-listener>
+    </lifecycle>
+
+    <render-kit>
+        <renderer>
+            <component-family>javax.faces.Messages</component-family>
+            <renderer-type>javax.faces.Messages</renderer-type>
+            <renderer-class>ir.javadev.jsf.parsfaces.render.UIMessagesRenderer</renderer-class>
+        </renderer>
+    </render-kit>
+
+</faces-config>

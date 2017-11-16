@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:pf="http://javadev.ir"
+                xmlns:insurance="http://xmlns.jcp.org/jsf/composite/components"
+                template="/base/template.xhtml">
+
+    <ui:define name="metadata">
+        <f:metadata>
+            <f:viewParam name="parentId" value="#{insuranceLiabilityManager.parentId}"/>
+            <f:viewParam name="insurancePlan" value="#{insuranceLiabilityManager.insuranceLiability.insurancePlan.id}"/>
+            <f:viewAction action="#{insuranceLiabilityManager.onLoad}"/>
+        </f:metadata>
+    </ui:define>
+
+    <ui:define name="pageTitle">
+        #{msglbl['label.insuranceLiability.list']}
+    </ui:define>
+
+    <ui:define name="content">
+        <fieldset>
+            <legend  style="text-align: right">
+                <h:outputLabel value="#{msglbl['label.insuranceLiability.list']}"/>
+            </legend>
+
+            <h:form id="form">
+                <pf:dataTable id="insuranceLiabilityList" value="#{insuranceLiabilityManager.insuranceLiabilityList}"
+                              var="insuranceLiability">
+
+                    <f:facet name="caption">
+                        <h:commandButton value="#{msglbl.add}" rendered="#{param.parentId eq null}">
+                            <pf:dialogBehavior src="insert.xhtml"/>
+                        </h:commandButton>
+                    </f:facet>
+
+                    <pf:column headerText="#{msglbl['label.baseEntity.id']}">
+                        <h:link value="#{insuranceLiability.id}" outcome="profile">
+                            <f:param name="id" value="#{insuranceLiability.id}"/>
+                        </h:link>
+                    </pf:column>
+
+                    <pf:column headerText="#{msglbl['label.insuranceLiability.ceilingLiabilityAmount']}">
+                        <h:outputText value="#{insuranceLiability.ceilingLiabilityAmount}"/>
+                    </pf:column>
+
+                    <pf:column headerText="#{msglbl['label.insuranceLiability.description']}">
+                        <h:outputText value="#{insuranceLiability.description}"/>
+                    </pf:column>
+
+                    <pf:column headerText="#{msglbl['label.insuranceLiability.displayOrder']}">
+                        <h:outputText value="#{insuranceLiability.displayOrder}"/>
+                    </pf:column>
+
+                    <pf:column headerText="#{msglbl['label.insuranceLiability.waitingPeriod']}">
+                        <h:outputText value="#{insuranceLiability.waitingPeriod}"/>
+                    </pf:column>
+
+                    <pf:column headerText="#{msglbl['label.insuranceLiability.insurancePlan']}">
+                        <h:outputText value="#{insuranceLiability.insurancePlan.description}"/>
+                    </pf:column>
+
+                    <pf:column headerText="#{msglbl['label.insuranceLiability.parentInsuranceLiability']}">
+                        <h:outputText value="#{insuranceLiability.parentInsuranceLiability.description}"/>
+                    </pf:column>
+
+                    <pf:column style="width:60px;text-align: center">
+                        <insurance:dataTableButton insertPageAddress="/admin/insuranceliability/insert" baseEntity="#{insuranceLiability}"/>
+
+                        <h:commandButton value="#{msglbl.select}"
+                                         action="#{insuranceLiabilityManager.selectAction(insuranceLiability)}"
+                                         rendered="#{param.parentId ne null}">
+                            <f:param name="t" value="0"/>
+                            <f:param name="parentId" value="#{param.parentId}" />
+                            <f:ajax render=":messages" execute="none"/>
+                        </h:commandButton>
+                    </pf:column>
+
+                </pf:dataTable>
+            </h:form>
+        </fieldset>
+    </ui:define>
+</ui:composition>
